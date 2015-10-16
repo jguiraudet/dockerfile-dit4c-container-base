@@ -59,12 +59,10 @@ RUN fsudo yum install -y \
 # Install EasyDAV dependencies
 RUN fsudo pip install kid flup
 
-# Install NPM & tty-lean.js
-RUN fsudo rpm --rebuilddb && fsudo yum install -y tar gcc-c++ && \
-  curl -s -L https://npmjs.org/install.sh | clean=no fsudo bash && \
-  fsudo rm -r ~/.npm
-RUN fsudo npm install -g tty-lean.js@0.1.5 && \
-  fsudo rm -r ~/.npm
+# Install gotty
+RUN VERSION=v0.0.11 && \
+  curl -sL https://github.com/yudai/gotty/releases/download/$VERSION/linux_amd64.tar.gz \
+    | tar xzC /usr/local/bin
 
 # Install EasyDAV
 COPY easydav_fix-archive-download.patch /tmp/
