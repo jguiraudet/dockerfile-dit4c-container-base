@@ -44,7 +44,6 @@ RUN fsudo rpm --rebuilddb && \
 # - supervisord for monitoring
 # - nginx for reverse-proxying
 # - Git and development tools
-# - node.js for TTY.js
 # - PIP so we can install EasyDav dependencies
 # - patching dependencies
 RUN fsudo yum install -y \
@@ -52,7 +51,6 @@ RUN fsudo yum install -y \
   nginx \
   git vim-enhanced nano wget tmux screen bash-completion man \
   tar zip unzip \
-  nodejs \
   python-pip \
   patch
 
