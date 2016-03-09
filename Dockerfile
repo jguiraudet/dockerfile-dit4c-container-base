@@ -8,21 +8,26 @@ MAINTAINER t.dettrick@uq.edu.au
 VOLUME ["/var/cache/apk", "/tmp"]
 
 # Install
+# - bash for shell
 # - sudo for giving sudo
 # - coreutils for dircolors
 # - supervisord for monitoring
 # - nginx for reverse-proxying
 # - patching dependencies
+# - useful documentation
 RUN apk add --update \
+    bash bash-doc \
     sudo \
     coreutils \
     supervisor \
     nginx \
     vim nano curl wget tmux screen bash-completion man tar zip unzip \
-    patch
+    patch \
+    bash-doc coreutils-doc \
+    vim-doc nano-doc curl-doc wget-doc tar-doc zip-doc unzip-doc
 
 # Install Git
-RUN apk add --update git
+RUN apk add --update git git-doc
 
 # Install gotty
 RUN VERSION=v0.0.12 && \
