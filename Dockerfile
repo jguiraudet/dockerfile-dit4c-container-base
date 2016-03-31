@@ -54,6 +54,7 @@ COPY etc /etc
 COPY opt /opt
 COPY var /var
 
+RUN chown -R nginx:nginx /var/lib/nginx
 # Check nginx config is OK
 RUN nginx -t
 
