@@ -1,11 +1,3 @@
-# Defaults specification
-
-#
-# Disable "ssh hostname sudo <cmd>", because it will show the password in clear.
-#         You have to run "ssh -t hostname sudo <cmd>".
-#
-Defaults    requiretty
-
 Defaults    env_reset
 Defaults    env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS_COLORS"
 Defaults    env_keep += "MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE"
@@ -13,18 +5,6 @@ Defaults    env_keep += "LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES
 Defaults    env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
 Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
 
-Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
-
-## Next comes the main part: which users can run what software on
-## which machines (the sudoers file can be shared between multiple
-## systems).
-## Syntax:
-##
-##      user    MACHINE=COMMANDS
-##
-## The COMMANDS section may have other options added to it.
-##
-## Allow root to run any commands anywhere
 root    ALL=(ALL)       ALL
 
 %sudo  ALL=(ALL)       NOPASSWD: ALL
