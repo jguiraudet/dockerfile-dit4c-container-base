@@ -1,7 +1,7 @@
 # DOCKER-VERSION 1.0
 
 # Base image for other DIT4C platform images
-FROM alpine:3.3
+FROM alpine:3.4
 MAINTAINER t.dettrick@uq.edu.au
 
 # Directories that don't need to be preserved in images
@@ -30,7 +30,7 @@ RUN apk add --update \
 RUN apk add --update git git-doc
 
 # Install gotty
-RUN VERSION=v0.0.12 && \
+RUN VERSION=v0.0.13 && \
   curl -sL https://github.com/yudai/gotty/releases/download/$VERSION/gotty_linux_amd64.tar.gz \
     | tar xzC /usr/local/bin
 
@@ -68,6 +68,9 @@ RUN adduser -D -s /bin/bash -G wheel researcher && \
     passwd -d -u researcher
 
 RUN chown -R researcher /var/log/easydav /var/log/supervisor
+
+# Apparently /etc/hosts can make its way into the image -> bad
+RUN rm /etc/hosts
 
 # Logs do not need to be preserved when exporting
 VOLUME ["/var/log"]
