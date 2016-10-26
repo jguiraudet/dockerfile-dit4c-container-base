@@ -69,8 +69,5 @@ RUN adduser -D -s /bin/bash -G wheel researcher && \
 
 RUN chown -R researcher /var/log/easydav /var/log/supervisor
 
-# Apparently /etc/hosts can make its way into the image -> bad
-RUN rm /etc/hosts
-
 # Logs do not need to be preserved when exporting
 VOLUME ["/var/log"]
