@@ -34,24 +34,16 @@ RUN VERSION=v0.0.13 && \
   curl -sL https://github.com/yudai/gotty/releases/download/$VERSION/gotty_linux_amd64.tar.gz \
     | tar xzC /usr/local/bin
 
-# Install EasyDAV dependencies
-RUN apk add --update py-pip && pip install kid flup
+# Install Caddy with filemanager plugin
+RUN mkdir -p /opt/caddy && \
+  curl -L "https://caddyserver.com/download/build?os=linux&arch=amd64&features=filemanager%2Crealip" \
+    | tar xzv -C /opt/caddy
 
-# Install EasyDAV
-COPY easydav_fix-archive-download.patch /tmp/
-RUN mkdir -p /opt && cd /opt && \
-  curl http://koti.kapsi.fi/jpa/webdav/easydav-0.4.tar.gz | tar zxvf - && \
-  mv easydav-0.4 easydav && \
-  cd easydav && \
-  patch -p1 < /tmp/easydav_fix-archive-download.patch && \
-  cd -
-
-# Log directory for easydav & supervisord
-RUN mkdir -p /var/log/easydav /var/log/supervisor
+# Log directory for supervisord
+RUN mkdir -p /var/log/supervisor
 
 # Add supporting files (directory at a time to improve build speed)
 COPY etc /etc
-COPY opt /opt
 COPY var /var
 
 RUN chown -R nginx:nginx /var/lib/nginx
@@ -67,7 +59,9 @@ RUN adduser -D -s /bin/bash -G wheel researcher && \
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     passwd -d -u researcher
 
-RUN chown -R researcher /var/log/easydav /var/log/supervisor
+RUN chown -R researcher /var/log/supervisor
+
+RUN su - researcher -c "mkdir -p ~/.caddy/conf.d && printf \"import conf.d/*\" > ~/.caddy/Caddyfile && printf \"localhost:3100 {\nfilemanager /files {\nallow_commands false\nallow dotfiles\n}\n}\" > ~/.caddy/conf.d/files.conf"
 
 # Logs do not need to be preserved when exporting
 VOLUME ["/var/log"]
