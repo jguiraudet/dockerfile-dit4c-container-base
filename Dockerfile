@@ -1,16 +1,12 @@
 # DOCKER-VERSION 1.0
 
 # Base image for other DIT4C platform images
-FROM debian:8
+FROM nvidia/cuda:8.0-cudnn5-devel
 MAINTAINER t.dettrick@uq.edu.au
 
 # Directories that don't need to be preserved in images
 VOLUME ["/var/cache/apt", "/tmp"]
 
-# Install Nginx repo
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key 7BD9BF62 && \
-  echo "deb http://nginx.org/packages/debian/ jessie nginx" >> /etc/apt/sources.list && \
-  echo "deb-src http://nginx.org/packages/debian/ jessie nginx" >> /etc/apt/sources.list
 
 # Install
 # - sudo and passwd for creating user/giving sudo
